@@ -11,15 +11,5 @@ public class SimpleStack<T> {
     public void push(T value) {
         linked.addFirst(value);
     }
-
-    private static class Node<T> {
-        final T value;
-        Node<T> next;
-
-        public Node(T value, Node<T> next) {
-            this.value = value;
-            this.next = next;
-        }
-    }
 }
 
