@@ -12,7 +12,7 @@ public class SimpleQueueTest {
     @Test
     public void whenPushPoll() {
         SimpleQueue<Integer> queue = new SimpleQueue<>();
-        queue.pushIn(1);
+        queue.push(1);
         int rsl = queue.poll();
         assertThat(rsl, is(1));
     }
@@ -20,8 +20,8 @@ public class SimpleQueueTest {
     @Test
     public void when2PushPoll() {
         SimpleQueue<Integer> queue = new SimpleQueue<>();
-        queue.pushIn(1);
-        queue.pushIn(2);
+        queue.push(1);
+        queue.push(2);
         int rsl = queue.poll();
         assertThat(rsl, is(1));
     }
@@ -29,9 +29,9 @@ public class SimpleQueueTest {
     @Test
     public void when2PushPollPushPoll() {
         SimpleQueue<Integer> queue = new SimpleQueue<>();
-        queue.pushIn(1);
+        queue.push(1);
         queue.poll();
-        queue.pushIn(2);
+        queue.push(2);
         int rsl = queue.poll();
         assertThat(rsl, is(2));
     }
@@ -45,10 +45,10 @@ public class SimpleQueueTest {
     @Test
     public void whenPushPushPollAndPush() {
         SimpleQueue<Integer> queue = new SimpleQueue<>();
-        queue.pushIn(1);
-        queue.pushIn(2);
+        queue.push(1);
+        queue.push(2);
         queue.poll();
-        queue.pushIn(3);
+        queue.push(3);
         assertThat(queue.poll(), is(2));
     }
 }
