@@ -12,6 +12,10 @@ public class SimpleStack<T> {
         linked.addFirst(value);
     }
 
+    public void pushIn(T value) {
+        linked.add(value);
+    }
+
     public boolean isEmpty() {
         return linked.isEmpty();
     }
