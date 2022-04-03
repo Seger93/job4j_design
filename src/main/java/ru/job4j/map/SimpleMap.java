@@ -18,11 +18,11 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        int hashCode = key.hashCode();
-        int bucket = indexFor(hashCode);
         if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
+        int hashCode = key.hashCode();
+        int bucket = indexFor(hashCode);
         boolean rls = table[bucket] == null;
         if (rls) {
             MapEntry<K, V> newTable = new MapEntry<>(key, value);
@@ -38,49 +38,43 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int indexFor(int hash) {
-        return (table.length - 1) & hash;
+        return hash % capacity;
     }
 
     private void expand() {
-        MapEntry<K, V>[] tableNew = new MapEntry[capacity * 2];
         capacity *= 2;
-        for (K key : this) {
-            if (key == null) {
-                continue;
+        MapEntry<K, V>[] newTable = new MapEntry[capacity];
+        for (MapEntry<K, V> keySet : table) {
+            if (keySet != null) {
+                K currentKey = keySet.key;
+                int currentHash = hash(currentKey.hashCode());
+                int index = indexFor(currentHash);
+                newTable[index] = keySet;
             }
-            V value = get(key);
-            int hashCode = hash(key.hashCode());
-            int bucket = indexFor(hashCode);
-            MapEntry<K, V> newValueAndKey = new MapEntry<>(key, value);
-            tableNew[bucket] = newValueAndKey;
         }
-        table = tableNew;
+        table = newTable;
     }
 
     @Override
     public V get(K key) {
         int hashCode = key.hashCode();
         int bucket = indexFor(hashCode);
-        if (table[bucket] != null) {
-            return table[bucket].value;
-        } else {
-            return null;
-        }
+        return table[bucket] == null
+                || !key.equals(table[bucket].key)
+                ? null : table[bucket].value;
     }
 
     @Override
     public boolean remove(K key) {
-        boolean rsl = false;
-        if (get(key) != null) {
-            int k = key.hashCode();
-            int b = indexFor(k);
-            table[b].key = null;
-            table[b].value = null;
-            rsl = true;
-            count--;
+        int hashCode = key.hashCode();
+        int bucket = indexFor(hashCode);
+        boolean result = table[bucket] != null && key.equals(table[bucket].key);
+        if (result) {
+            table[bucket] = null;
             modCount++;
+            count--;
         }
-        return rsl;
+        return result;
     }
 
     @Override
@@ -89,21 +83,20 @@ public class SimpleMap<K, V> implements Map<K, V> {
             int bucket = 0;
             final int expectedModCount = modCount;
 
-            @Override
             public boolean hasNext() {
-                return bucket < count;
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                while (bucket < capacity && table[bucket] == null) {
+                    bucket++;
+                }
+                return bucket < capacity && table[bucket] != null;
             }
 
             @Override
             public K next() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                while (table[bucket] == null) {
-                    bucket++;
                 }
                 return table[bucket++].key;
             }
