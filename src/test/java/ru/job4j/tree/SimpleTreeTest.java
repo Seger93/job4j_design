@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
-
 public class SimpleTreeTest {
     @Test
     public void when6ElFindLastThen6() {
