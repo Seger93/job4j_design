@@ -6,8 +6,12 @@ import java.util.Arrays;
 public class ResultFile {
     public static void main(String[] args) {
         try (FileOutputStream out = new FileOutputStream("result.txt")) {
-            out.write(Arrays.deepToString(multiple(10)).getBytes());
-            out.write(System.lineSeparator().getBytes());
+            int size = 10;
+            int[][] s = multiple(size);
+            for (int i = 0; i < size; i++) {
+                out.write(Arrays.toString(s[i]).getBytes());
+                out.write(System.lineSeparator().getBytes());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -23,3 +27,5 @@ public class ResultFile {
         return array;
     }
 }
+
+
