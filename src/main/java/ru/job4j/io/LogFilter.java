@@ -8,8 +8,9 @@ import java.util.stream.Collectors;
 
 public class LogFilter {
     public List<String> filter(String file) {
+        List<String> rsl = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(new FileReader(file))) {
-            return in.lines()
+           rsl = in.lines()
                     .filter(s -> {
                         String[] line = s.split(" ");
                         if (line.length > 1) {
@@ -22,7 +23,7 @@ public class LogFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+        return rsl;
     }
 
     public static void main(String[] args) {
