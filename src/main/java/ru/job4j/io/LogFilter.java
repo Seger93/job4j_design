@@ -13,11 +13,8 @@ public class LogFilter {
            rsl = in.lines()
                     .filter(s -> {
                         String[] line = s.split(" ");
-                        if (line.length > 1) {
                             String found = line[line.length - 2];
-                            return "404".equals(found);
-                        }
-                        return false;
+                           return "404".equals(found);
                     })
                     .collect(Collectors.toList());
         } catch (Exception e) {
