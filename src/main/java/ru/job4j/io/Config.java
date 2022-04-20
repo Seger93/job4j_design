@@ -3,10 +3,7 @@ package ru.job4j.io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class Config {
 
@@ -19,10 +16,19 @@ public class Config {
 
     public void load() {
         try (BufferedReader in = new BufferedReader(new FileReader(path))) {
-            in.lines().filter(s -> (!s.isEmpty() && !s.startsWith("#")))
+            in.lines().filter(Objects::nonNull)
+                    .filter(s -> !s.startsWith("#"))
+                    .filter(l -> l.length() > 0)
+                    .filter(a -> {
+                        boolean rsl = true;
+                        if (a.startsWith("=") || a.endsWith("=")) {
+                            throw new IllegalArgumentException();
+                        }
+                        return rsl;
+                    })
                     .forEach(i -> {
-                        String[] arr = i.split("=");
-                        if (arr.length != 2) {
+                        String[] arr = i.split("=", 2);
+                        if (!i.contains("=")) {
                             throw new IllegalArgumentException();
                         }
                         values.put(arr[0], arr[1]);
