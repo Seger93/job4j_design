@@ -1,9 +1,8 @@
 package ru.job4j.io;
 
 import org.junit.Test;
-
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConfigTest {
 
@@ -13,6 +12,13 @@ public class ConfigTest {
         Config config = new Config(path);
         config.load();
         assertThat(config.value("name"), is("Sergei"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenPairIllegal() {
+        String path = "./appTest1.properties";
+        Config config = new Config(path);
+        config.load();
     }
 
     @Test
