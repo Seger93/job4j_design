@@ -18,12 +18,12 @@ public class Config {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             read.lines().filter(Objects::nonNull)
                     .filter(s -> !s.startsWith("#"))
-                    .filter(l -> l.length() > 0)
+                    .filter(l -> !l.isEmpty())
                     .filter(this::chekKey)
                     .forEach(i -> {
                         String[] arr = i.split("=", 2);
-                        if (!i.contains("=") || arr[0].isEmpty() || arr[1].isEmpty()) {
-                            throw new IllegalArgumentException();
+                        if (arr[0].isEmpty() || arr[1].isEmpty()) {
+                            throw new IllegalArgumentException("Некорректный ввод данных");
                         }
                         values.put(arr[0], arr[1]);
                     });
@@ -32,11 +32,11 @@ public class Config {
         }
     }
 
-    public boolean chekKey(String s) {
+    private boolean chekKey(String s) {
         if (s.contains("=")) {
             return true;
         }
-       throw new IllegalArgumentException();
+       throw new IllegalArgumentException("Строка не содержит =");
     }
 
     public String value(String key) {
