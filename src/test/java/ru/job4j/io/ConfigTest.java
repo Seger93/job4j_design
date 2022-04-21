@@ -15,13 +15,6 @@ public class ConfigTest {
         assertThat(config.value("name"), is("Sergei"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void whenPairIllegalArgument() {
-        String path = "./appTest1.properties";
-        Config config = new Config(path);
-        config.load();
-    }
-
     @Test
     public void whenTest2EmptyLine() {
         String path = "./appTest2.properties";
@@ -50,5 +43,13 @@ public class ConfigTest {
         String path = "./appTest5.properties";
         Config config = new Config(path);
         config.load();
+    }
+
+    @Test
+    public void whenResultEquals() {
+        String path = "./appTest6.properties";
+        Config config = new Config(path);
+        config.load();
+        assertThat(config.value("Piter"), is("Murmansk="));
     }
 }

@@ -15,20 +15,11 @@ public class Config {
     }
 
     public void load() {
-        try (BufferedReader in = new BufferedReader(new FileReader(path))) {
-            in.lines().filter(Objects::nonNull)
-                    .filter(s -> !s.startsWith("#"))
-                    .filter(l -> l.length() > 0)
-                    .filter(a -> {
-                        boolean rsl = true;
-                        if (a.startsWith("=") || a.endsWith("=")) {
-                            throw new IllegalArgumentException();
-                        }
-                        return rsl;
-                    })
-                    .forEach(i -> {
-                        String[] arr = i.split("=", 2);
-                        if (!i.contains("=")) {
+        try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
+            read.lines().filter(s -> !s.isBlank() && s.charAt(0) != '#')
+                    .map(s -> s.split("=", 2))
+                    .forEach(arr -> {
+                        if (arr.length <= 1 || arr[0].isEmpty()) {
                             throw new IllegalArgumentException();
                         }
                         values.put(arr[0], arr[1]);
