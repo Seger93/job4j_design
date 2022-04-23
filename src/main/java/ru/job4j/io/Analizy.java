@@ -4,8 +4,6 @@ import java.io.*;
 
 public class Analizy {
 
-    boolean flags = false;
-
     public void unavailable(String source, String target) {
         try (BufferedReader read = new BufferedReader(new FileReader(source))) {
             try (PrintWriter writer = new PrintWriter(new FileOutputStream(target))) {
