@@ -16,8 +16,12 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         if (!noDuplicateSet.add(
                 new FileProperty(file.toFile().length(), file.toFile().getName()))) {
-            System.out.println(file.toAbsolutePath());
+            setOfDuplicates(file);
         }
         return super.visitFile(file, attrs);
+    }
+
+    public void setOfDuplicates(Path f) {
+            System.out.println(f.toAbsolutePath());
     }
 }
