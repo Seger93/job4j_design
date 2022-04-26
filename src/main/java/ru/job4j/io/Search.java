@@ -1,5 +1,6 @@
 package ru.job4j.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,11 +23,21 @@ public class Search {
         return searcher.getPaths();
     }
 
-    private static boolean validate(String[] s) {
-        if (s.length != 0 && s[1].endsWith(".js")) {
-            return true;
+    public static void validate(String[] args) {
+        File file = new File(args[0]);
+        if (args.length < 2) {
+            throw new IllegalArgumentException("Not enough parameters");
         }
-        throw new IllegalArgumentException("Некорректные параметры, измените настройки конфигурации");
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
+        }
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
+        }
+        String format = args[1];
+        if (!format.startsWith(".")) {
+            throw new IllegalArgumentException("Please input valid format of searching files");
+        }
     }
 }
 
