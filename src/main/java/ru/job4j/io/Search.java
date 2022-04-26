@@ -27,18 +27,10 @@ public class Search {
         if (args.length == 0) {
             throw new IllegalArgumentException("Not enough parameters");
         }
-        File file = new File(args[0]);
         if (args.length < 2) {
             throw new IllegalArgumentException("Not enough parameters");
         }
-        if (!file.exists()) {
-            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
-        }
-        if (!file.isDirectory()) {
-            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
-        }
-        String format = args[1];
-        if (!format.startsWith(".")) {
+        if (!args[1].startsWith(".")) {
             throw new IllegalArgumentException("Please input valid format of searching files");
         }
     }
