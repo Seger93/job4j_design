@@ -24,6 +24,9 @@ public class Search {
     }
 
     public static void validate(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Not enough parameters");
+        }
         File file = new File(args[0]);
         if (args.length < 2) {
             throw new IllegalArgumentException("Not enough parameters");
