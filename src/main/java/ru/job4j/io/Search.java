@@ -24,11 +24,15 @@ public class Search {
     }
 
     public static void validate(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Not enough parameters");
-        }
         if (args.length < 2) {
             throw new IllegalArgumentException("Not enough parameters");
+        }
+        File file = new File(args[0]);
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
+        }
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
         }
         if (!args[1].startsWith(".")) {
             throw new IllegalArgumentException("Please input valid format of searching files");
