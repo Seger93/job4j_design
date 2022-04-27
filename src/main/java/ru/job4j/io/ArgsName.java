@@ -16,11 +16,17 @@ public class ArgsName {
     }
 
     private void parse(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Пустой массив");
+        }
         Arrays.stream(args)
                 .forEach(s -> {
                     String[] ss = s.split("=", 2);
                     if (chekKey(ss)) {
-                        values.put(ss[0].replaceFirst("-", ""), ss[1].replaceFirst("-", ""));
+                        if (ss[0].startsWith("-")) {
+                            values.put(ss[0].replaceFirst("-", ""), ss[1]);
+                        }
+                        values.put(ss[0], ss[1]);
                     }
                 });
 
