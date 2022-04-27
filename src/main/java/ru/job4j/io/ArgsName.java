@@ -21,15 +21,24 @@ public class ArgsName {
         }
         Arrays.stream(args)
                 .forEach(s -> {
-                    String[] ss = s.split("=", 2);
-                    if (chekKey(ss)) {
-                        if (ss[0].startsWith("-")) {
-                            values.put(ss[0].replaceFirst("-", ""), ss[1]);
-                        }
-                        values.put(ss[0], ss[1]);
-                    }
+                   if (chekStr(s)) {
+                       String[] ss = s.split("=", 2);
+                       if (chekKey(ss)) {
+                           if (ss[0].startsWith("-")) {
+                               values.put(ss[0].replaceFirst("-", ""), ss[1]);
+                           }
+                           values.put(ss[0], ss[1]);
+                       }
+                   }
                 });
 
+    }
+
+    private boolean chekStr(String s) {
+        if (!s.contains("=") && !s.startsWith("-")) {
+            throw new IllegalArgumentException("Строка не содержит = или не начинается с -");
+        }
+        return true;
     }
 
     private boolean chekKey(String[] s) {
