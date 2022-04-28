@@ -12,7 +12,7 @@ public class ArgsName {
         if (values.containsKey(key)) {
             return values.get(key);
         }
-            throw new IllegalArgumentException("Такого ключа не существует");
+        throw new IllegalArgumentException("Такого ключа не существует");
     }
 
     private void parse(String[] args) {
@@ -21,15 +21,12 @@ public class ArgsName {
         }
         Arrays.stream(args)
                 .forEach(s -> {
-                   if (chekStr(s)) {
-                       String[] ss = s.split("=", 2);
-                       if (chekKey(ss)) {
-                           if (ss[0].startsWith("-")) {
-                               values.put(ss[0].replaceFirst("-", ""), ss[1]);
-                           }
-                           values.put(ss[0], ss[1]);
-                       }
-                   }
+                    if (chekStr(s)) {
+                        String[] ss = s.split("=", 2);
+                        if (chekKey(ss)) {
+                            values.put(ss[0].replaceFirst("-", ""), ss[1]);
+                        }
+                    }
                 });
 
     }
