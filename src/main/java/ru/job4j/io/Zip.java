@@ -3,6 +3,7 @@ package ru.job4j.io;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -39,18 +40,10 @@ public class Zip {
         Zip zip = new Zip();
         ArgsName argsName = ArgsName.of(args);
         Path dir = Path.of(argsName.get("d"));
+        Search.validate(Objects.requireNonNull(dir.toFile().list()));
         String exclude = argsName.get("e");
-        List<Path> list = Search.search(dir, path -> path.toFile().getName().endsWith(exclude));
+        List<Path> list = Search.search(dir, path -> !path.toFile().getName().endsWith(exclude));
         File out = new File(argsName.get("o"));
-        if (!dir.toFile().exists()) {
-            throw new IllegalArgumentException("Not exist");
-        }
-        if (!dir.toFile().isDirectory()) {
-            throw new IllegalArgumentException("Not directory");
-        }
-        if (!exclude.startsWith(".")) {
-            throw new IllegalArgumentException("Please input valid format of searching files");
-        }
         zip.packFiles(list, out);
     }
 }
