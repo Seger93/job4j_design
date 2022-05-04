@@ -16,17 +16,19 @@ public class ConsoleChat {
         this.botAnswers = botAnswers;
     }
 
+    private String botSays(List<String> data) {
+        return data.get((int) (Math.random() * data.size()));
+    }
+
     public void run() {
-        Random random = new Random();
         Scanner scanner = new Scanner(System.in);
         List<String> logOut = new ArrayList<>();
+        String question;
+        String answer = botSays(readPhrases());
         while (!OUT.equals(scanner.nextLine())) {
-            String question;
-            String answer = readPhrases().get(random.nextInt(8));
-            System.out.println(answer);
             question = scanner.nextLine();
+            System.out.println(botSays(readPhrases()));
             if (STOP.equals(question)) {
-                logOut.add(question);
                 while (!CONTINUE.equals(question)) {
                     question = scanner.nextLine();
                     logOut.add(question);
