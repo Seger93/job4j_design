@@ -23,20 +23,20 @@ public class ConsoleChat {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         List<String> logOut = new ArrayList<>();
-        String question;
-        String answer = botSays(readPhrases());
-        while (!OUT.equals(scanner.nextLine())) {
+        String question = "";
+        List<String> answer = readPhrases();
+        while (!OUT.equals(question)) {
             question = scanner.nextLine();
-            System.out.println(botSays(readPhrases()));
+            logOut.add(question);
             if (STOP.equals(question)) {
                 while (!CONTINUE.equals(question)) {
                     question = scanner.nextLine();
                     logOut.add(question);
-                    logOut.add(answer);
                 }
             }
-            logOut.add(question);
-            logOut.add(answer);
+            String botAnswer = botSays(answer);
+            logOut.add(botAnswer);
+            System.out.println(botAnswer);
         }
         saveLog(logOut);
     }
@@ -44,7 +44,7 @@ public class ConsoleChat {
     private List<String> readPhrases() {
         List<String> rsl = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path, Charset.defaultCharset()))) {
-            br.lines().map(s -> s + System.lineSeparator()).forEach(rsl::add);
+            br.lines().forEach(rsl::add);
         } catch (IOException e) {
             e.printStackTrace();
         }
