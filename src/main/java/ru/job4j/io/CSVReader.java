@@ -48,7 +48,7 @@ public class CSVReader {
                 outputLine = stringJoiner + System.lineSeparator();
 
             }
-            if (out.equals("stdout")) {
+            if ("stdout".equals(out)) {
                 System.out.println(outputLine);
             } else {
                 try (FileOutputStream outputStream = new FileOutputStream(out)) {
