@@ -17,7 +17,7 @@ public class CSVReader {
         }
     }
 
-    public static void handle(ArgsName argsName) {
+    public static void handle(ArgsName argsName) throws Exception {
         CSVReader csvReader = new CSVReader();
         String file = argsName.get("path");
         String delimiter = argsName.get("delimiter");
