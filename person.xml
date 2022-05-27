@@ -1,0 +1,9 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<person sex="true" age="29">
+    <contact zipCode="178" phone="911-111-123"/>
+    <statuses>
+        <status>Married</status>
+        <status>WorksToJAva</status>
+        <status>AngryMan</status>
+    </statuses>
+</person>
