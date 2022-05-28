@@ -18,6 +18,8 @@ public class Person {
     private int age;
     private Contact contact;
 
+    @XmlElementWrapper(name = "statuses")
+    @XmlElement(name = "status")
     private String[] statuses;
 
     public Person() {
