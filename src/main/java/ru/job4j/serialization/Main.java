@@ -8,7 +8,7 @@ public class Main {
         final Person person = new Person(false, 30, new Contact(111, "11-111"),
                 new String[]{"Worker", "Married"});
         final Person person1 = new Person(true, 29, new Contact(178, "911-11-111"),
-        new String[] {"Married", "WorksToJAva", "AngryMan"});
+                new String[] {"Married", "WorksToJAva", "AngryMan"});
         final Gson gson = new GsonBuilder().create();
         System.out.println(gson.toJson(person));
         final Gson gson1 = new GsonBuilder().create();
