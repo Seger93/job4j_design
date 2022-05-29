@@ -1,7 +1,6 @@
 package ru.job4j.serialization;
 
 import java.util.Arrays;
-
 public class Person {
     private final boolean sex;
     private final int age;
@@ -23,5 +22,21 @@ public class Person {
                 + ", contact=" + contact
                 + ", statuses=" + Arrays.toString(statuses)
                 + '}';
+    }
+
+    public boolean isSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public String[] getStatuses() {
+        return statuses;
     }
 }
