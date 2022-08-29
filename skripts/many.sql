@@ -1,17 +1,18 @@
-create table auto(
+create table family(
     id serial primary key,
     name varchar(255)
 );
 
-create table family(
+create table auto(
     id serial primary key,
     name varchar(255),
-    auto_id int references auto(id)
+    family_id int references family(id)
 );
 
-insert into auto(name) values ('opel');
+insert into family(name) VALUES ('husband');
+insert into family(name) VALUES ('wife');
 
-insert into family(name, auto_id) VALUES ('husband', 1);
+insert into auto(name, family_id) values ('opel', 1);
 
 select * from family;
 
