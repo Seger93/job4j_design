@@ -1,6 +1,6 @@
-insert into users(name) VALUES ('Sergei');
+insert into role(name) values ('brewer');
 
-insert into role(name, users_id) values ('brewer', 1);
+insert into users(name, role_id) VALUES ('Sergei', 1);
 
 insert into rules(name) values ('craft');
 
