@@ -20,6 +20,7 @@ insert into type(name) values ('Соус');
 insert into product(name, type_id, expired_date, price ) values ('Голладский', 1, date '2022-09-22', 450);
 insert into product(name, type_id, expired_date, price ) values ('Гауда', 1, date '2022-09-21', 455);
 insert into product(name, type_id, expired_date, price ) values ('Cыр плавленный', 1, date '2022-10-01', 300);
+insert into product(name, type_id, expired_date, price ) values ('Cыр дружба', 1, date '2022-10-01', 700);
 insert into product(name, type_id, expired_date, price ) values ('Сыр Чеддер', 1, date '2022-09-07', 700);
 insert into product(name, type_id, expired_date, price ) values ('Отборное', 2, date '2022-09-16', 550);
 insert into product(name, type_id, expired_date, price ) values ('Обычное', 2, date '2022-09-19', 400);
@@ -36,16 +37,23 @@ insert into product(name, type_id, expired_date, price ) values ('Горчица
 insert into product(name, type_id, expired_date, price ) values ('Кетчунез', 5, date '2022-09-16', 50);
 insert into product(name, type_id, expired_date, price ) values ('Сырный', 5, date '2022-09-01', 50);
 
-select * from  product where type_id = 1; -- Все продукты с типом Сыр
+ -- Все продукты с типом Сыр
+select * from product as p
+join type as t
+on p.type_id= t.id
+where t.name like '%Сыр%';
 
 select * from  product where name LIKE '%Мороженное%'; -- Все продукты которые содержат искомое слово.
 
 select * from  product where expired_date < current_date; -- Все продукты с истекшим сроком годности.
 
 -- максимальная стоимость продукта.
-select max(price) from product;
--- максимальная стоимость продукта второй вариант.
-select * from product order by price desc limit 1;
+select p.name, p.price, p.expired_date, t.name
+from product as p
+join type as t
+on p.type_id= t.id
+group by p.name, p.price, p.expired_date, t.name
+having p.price = (select max(price) from product);
 
 select t.name, count(p.type_id) -- выбираем сортировку по названию продукта и считаем общее количество из таблицы продуктов.
 from product as p -- выборка из таблицы продуктов и присвоим ей символ.
@@ -53,10 +61,10 @@ join type t on p.type_id = t.id -- присоединим к таблице пр
 group by t.name -- сгруппируем по названию типа продукта.
 
 --Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО"
-SELECT name
-FROM product
-WHERE type_id = 1 OR type_id = 2
-group by name;
+select * from product as p
+join type as t
+on p.type_id= t.id
+where t.name like '%Сыр%' OR t.name like '%Молоко%';
 
 --Написать запрос, который выводит тип продуктов, которых осталось меньше 4 штук.
 select t.name, count(p.type_id)
