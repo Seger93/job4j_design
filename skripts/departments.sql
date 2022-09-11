@@ -1,41 +1,44 @@
-create table employees(
+create table departments(
     id serial primary key,
     name varchar(255)
 );
 
-create table departments(
+create table employees(
     id serial primary key,
     name varchar(255),
-    employees_id int references employees(id)
+    departments_id int references departments(id)
 );
+insert into departments(name) values ('Налоговая');
+insert into departments(name) values ('Налоговая');
+insert into departments(name) values ('ФСО');
+insert into departments(name) values ('Минздрав');
+insert into departments(name) values ('ФСБ');
 
-insert into employees(name) values ('Миша');
-insert into employees(name) values ('Коля');
-insert into employees(name) values ('Вася');
-
-insert into departments(name, employees_id) values ('Налоговая',1);
-insert into departments(name, employees_id) values ('Налоговая',2);
-insert into departments(name, employees_id) values ('ФСО', 2);
-insert into departments(name, employees_id) values ('Водоканал', 3);
-insert into departments(name, employees_id) values ('Минздрав', null);
-insert into departments(name, employees_id) values ('ФСБ', null);
+insert into employees(name, departments_id) values ('Миша', 1);
+insert into employees(name, departments_id) values ('Коля', 2);
+insert into employees(name, departments_id) values ('Вася', 3);
+insert into employees(name, departments_id) values ('Вася', 4);
+insert into employees(name, departments_id) values ('Оля', 4);
+insert into employees(name, departments_id) values ('Сергей', 1);
+insert into employees(name, departments_id) values ('Петя', null);
+insert into employees(name, departments_id) values ('Лена', null );
 
 --many-to-one, выполнять присоединение таблицы, которая one, к таблице, которая many.
-select * from departments d left join employees e on e.id = d.employees_id;
+select * from departments d left join employees e on d.id = e.departments_id;
 
-select * from departments d right join employees e on e.id = d.employees_id;
+select * from departments d right join employees e on d.id = e.departments_id;
 
-select * from departments d full join employees e on e.id = d.employees_id;
+select * from departments d full join employees e  on d.id = e.departments_id;
 
 select * from departments d cross join employees e;
 
 --Используя left join найти департаменты, у которых нет работников.
-select * from departments d left join employees e on e.id = d.employees_id where employees_id is null;
+select * from departments d left join employees e on d.id = e.departments_id where departments_id is null;
 
 --Используя left и right join написать запросы, которые давали бы одинаковый результат
-select * from departments d left join employees e on e.id = d.employees_id where employees_id is not null;
+select * from departments d left join employees e on d.id = e.departments_id where departments_id is not null;
 
-select * from departments d right join employees e on e.id = d.employees_id;
+select * from departments d right join employees e on d.id = e.departments_id where departments_id is not null;
 
 --все возможные разнополые пары.
 create table teens(
