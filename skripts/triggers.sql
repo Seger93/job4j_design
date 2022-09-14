@@ -35,9 +35,7 @@ create or replace function tax1()
     returns trigger as
 $$
 BEGIN
-    update products
-    set price = price + 20
-    where id = (select id from products);
+    new.price = new.price + 20;
     return new;
 END;
 $$
