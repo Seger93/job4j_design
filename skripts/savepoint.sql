@@ -36,3 +36,5 @@ select * from auto;
 
 rollback to first_savepoint;
 
+commit transaction;
+
