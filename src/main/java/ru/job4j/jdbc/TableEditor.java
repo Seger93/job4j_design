@@ -1,6 +1,5 @@
 package ru.job4j.jdbc;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +9,7 @@ import java.util.StringJoiner;
 
 public class TableEditor implements AutoCloseable {
     private static Connection connection;
-    private Properties properties;
+    private static Properties properties;
 
     public TableEditor(Properties properties) throws Exception {
         this.properties = properties;
@@ -18,13 +17,6 @@ public class TableEditor implements AutoCloseable {
     }
 
     private void initConnection() throws Exception {
-        properties = new Properties();
-        try (InputStream in = TableEditor.class.getClassLoader().
-                getResourceAsStream("tableEditor.properties")) {
-            properties.load(in);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
         String driver = properties.getProperty("driver_class");
         Class.forName(driver);
         String url = properties.getProperty("url");
@@ -42,14 +34,15 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void createTable(String tableName) throws Exception {
-        String sql = "CREATE TABLE if not exists " + tableName
-                + " (id SERIAL PRIMARY KEY)";
+        String sql = String.format("CREATE TABLE if not exists " + tableName
+                + " (id SERIAL PRIMARY KEY)"
+        );
         goStatement(sql);
     }
 
     public void dropTable(String tableName) throws Exception {
         String sql = String.format(
-                "DROP TABLE IF NOT EXISTS %s();",
+                "DROP TABLE %s;",
                 tableName
         );
         goStatement(sql);
@@ -65,7 +58,7 @@ public class TableEditor implements AutoCloseable {
 
     public void dropColumn(String tableName, String columnName) throws Exception {
         String sql = String.format(
-                "ALTER TABLE %s DROP COLUMN %s %s;",
+                "ALTER TABLE %s DROP COLUMN %s;",
                 tableName, columnName
         );
         goStatement(sql);
@@ -99,12 +92,12 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        Properties properties1 = new Properties();
-        try (InputStream in = TableEditor.class.getClassLoader().
-                getResourceAsStream("tableEditor.properties")) {
-            properties1.load(in);
+        Properties config = new Properties();
+        try (InputStream in = TableEditor.class.getClassLoader().getResourceAsStream("tableEditor.properties")) {
+            config.load(in);
+
         }
-        try (TableEditor tableEditor = new TableEditor(properties1)) {
+        try (TableEditor tableEditor = new TableEditor(config)) {
             tableEditor.createTable("test");
             System.out.println(getTableScheme("test"));
             tableEditor.addColumn("test", "auto", "int");
