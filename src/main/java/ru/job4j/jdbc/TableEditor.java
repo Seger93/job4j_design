@@ -8,8 +8,8 @@ import java.util.Properties;
 import java.util.StringJoiner;
 
 public class TableEditor implements AutoCloseable {
-    private static Connection connection;
-    private static Properties properties;
+    private Connection connection;
+    private Properties properties;
 
     public TableEditor(Properties properties) throws Exception {
         this.properties = properties;
@@ -34,8 +34,9 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void createTable(String tableName) throws Exception {
-        String sql = String.format("CREATE TABLE if not exists " + tableName
-                + " (id SERIAL PRIMARY KEY)"
+        String sql = String.format(
+                "CREATE TABLE IF NOT EXISTS %s();",
+                tableName
         );
         goStatement(sql);
     }
@@ -72,7 +73,7 @@ public class TableEditor implements AutoCloseable {
         goStatement(sql);
     }
 
-    public static String getTableScheme(String tableName) throws Exception {
+    public static String getTableScheme(Connection connection, String tableName) throws Exception {
         var rowSeparator = "-".repeat(30).concat(System.lineSeparator());
         var header = String.format("%-15s|%-15s%n", "NAME", "TYPE");
         var buffer = new StringJoiner(rowSeparator, rowSeparator, rowSeparator);
@@ -99,13 +100,13 @@ public class TableEditor implements AutoCloseable {
         }
         try (TableEditor tableEditor = new TableEditor(config)) {
             tableEditor.createTable("test");
-            System.out.println(getTableScheme("test"));
+            System.out.println(getTableScheme(tableEditor.connection, "test"));
             tableEditor.addColumn("test", "auto", "int");
-            System.out.println(getTableScheme("test"));
+            System.out.println(getTableScheme(tableEditor.connection, "test"));
             tableEditor.renameColumn("test", "auto", "moto");
-            System.out.println(getTableScheme("test"));
+            System.out.println(getTableScheme(tableEditor.connection, "test"));
             tableEditor.dropColumn("test", "moto");
-            System.out.println(getTableScheme("test"));
+            System.out.println(getTableScheme(tableEditor.connection, "test"));
             tableEditor.dropTable("test");
         }
     }
